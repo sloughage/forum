@@ -1,0 +1,9 @@
+{{#if isLoggedIn}}
+<div class='box'><a href='/new'>new thread</a></div>
+
+{{/if}}
+{{#each threads}}
+<div class='box border thread'>
+    <a href='/thread/{{this.id}}' class='overflow'><p class='overflow'>{{this.title}}</p></a>
+</div>
+{{/each}}

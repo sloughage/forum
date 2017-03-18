@@ -1,0 +1,24 @@
+<div>
+    {{#if isLoggedIn}}
+    <a href='/user/logout'>logout</a>
+    {{/if}}
+
+    {{#unless isLoggedIn}}
+    <form action='/user/login' method='POST'>
+        <div class="cont v">
+            <div class="cont">
+                <input type='text' name='username' class='textbox_s' placeholder="username" minlength='4' maxlength='16' tabindex=2 required>
+                <div class='space_h'></div>
+                <button tabindex=4>login</button>
+            </div>
+            <div class="space_v"></div>
+            <div class="cont">
+                <input type='password' name='password' class='textbox_s' placeholder="password" minlength='4' maxlength='16' tabindex=3 required>
+                <div class='space_h'></div>
+                <div class='space_h'></div>
+                <a href='/user/register' tabindex=5>register</a>
+            </div>
+        </div>
+    </form>
+    {{/unless}}
+</div>

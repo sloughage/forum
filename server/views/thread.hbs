@@ -1,0 +1,29 @@
+<div class='box'><p class='overflow'>{{threadtitle}}</p></div>
+{{#each posts}}
+<div class='box border'>
+    <div class='leftcont' data-id='{{this.id}}'>
+        <p class='overflow'>{{this.username}}</p>
+        <p>{{this.time}}</p>
+        {{#if this.isUser}}
+        <button class='edit-post h'>edit</button>
+        <button class='patch-post h hidden'>save</button>
+        <button class='delete-post h hidden'>delete</button>
+        {{/if}}
+    </div>
+    <div class='rightcont'>
+        <p class='h'>{{this.content}}</p>
+        {{#if this.isUser}}
+        <textarea name='content' class='h hidden' required>{{this.content}}</textarea>
+        {{/if}}
+    </div>
+</div>
+{{/each}}
+{{#if isLoggedIn}}
+<form action='/post/{{threadId}}' method='post'>
+    <div class='box v border'>
+        <div class='cont'><textarea name='content' autofocus required></textarea></div>
+        <div class='space_v'></div>
+        <button type='submit'>post</button>
+    </div>
+</form>
+{{/if}}

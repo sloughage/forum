@@ -1,0 +1,101 @@
+body {
+    color: white;
+    background-color: black;
+}
+
+button {
+    width: 60px;
+}
+
+textarea {
+    flex-grow: 1;
+}
+
+a:link {
+    color: powderblue;
+}
+
+a:visited {
+    color: plum;
+}
+
+a:active, a:hover {
+    color: white;
+}
+
+.pathlink:link, .pathlink:visited {
+    color: white;
+}
+
+.aligned {
+    align-items: center;
+}
+
+.fill {
+    flex-grow: 1;
+}
+
+.space_v {
+    height: 3px;
+}
+
+.space_h {
+    width: 6px;
+}
+
+.box {
+    display: flex;
+    margin: 6px;
+    padding: 6px;
+    min-width: 254px;
+}
+
+.cont {
+    display: flex;
+}
+
+.v {
+    flex-direction: column;
+}
+
+.border {
+    border: solid white 1px;
+    border-radius: 6px;
+}
+
+.overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.leftcont {
+    display: flex;
+    flex-direction: column;
+    border-right: solid white 1px;
+    padding-right: 6px;
+    width: 120px;
+}
+
+.rightcont {
+    display: flex;
+    flex-grow: 1;
+    padding-left: 6px;
+    word-break: break-all;
+}
+
+.textbox_s {
+    width: 120px;
+}
+
+.textbox_l {
+
+}
+
+.message {
+    color: red;
+}
+
+.hidden {
+    display: none;
+}

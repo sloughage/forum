@@ -1,0 +1,14 @@
+{{#if isLoggedIn}}
+<div class='box'><p><a href='/user/logout'>logout</a> before registering a new account</p></div>
+{{/if}}
+{{#unless isLoggedIn}}
+<form action='/user/register' method='post'>
+    <div class='box v'>
+        <input type='text' name='username' class='textbox_s' placeholder="username" minlength='4' maxlength='16' autofocus required>
+        <div class='space_v'></div>
+        <input type='password' name='password' class='textbox_s' placeholder="password" minlength='4' maxlength='16' required>
+        <div class='space_v'></div>
+        <button type='submit'>register</button>
+    </div>
+</form>
+{{/unless}}
