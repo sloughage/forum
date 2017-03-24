@@ -7,8 +7,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" type="text/javascript"></script>
 </head>
 <body>
-    {{> header}}
-    <div id='message' class='message_box hidden'></div>
-    {{{body}}}
+    <header>
+        <a href='/'><div class='cont aligned'><p>forum</p></div></a>
+        <div class='fill'></div>
+        <div id='login'></div>
+    </header>
+    <div class='box hidden'><p class='message'>{{message}}</p></div>
+    <script src="/js/app.js" type="text/javascript"></script>
 </body>
 </html>

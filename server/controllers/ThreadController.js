@@ -28,6 +28,7 @@ router.get('/:id', function (req, res) {
                     });
                     res.render('thread', {
                         isLoggedIn: req.session.isLoggedIn,
+                        username: req.session.username,
                         title: "forum: " + thread.title,
                         threadtitle: thread.title,
                         threadId: id,

@@ -13,6 +13,7 @@ router.get('/', function (req, res) {
             });
             res.render('home', {
                 isLoggedIn: req.session.isLoggedIn,
+                username: req.session.username,
                 title: "forum",
                 threads: sThreads
             });
@@ -23,6 +24,7 @@ router.get('/', function (req, res) {
 router.get('/new', function (req, res) {
     res.render('new', {
         isLoggedIn: req.session.isLoggedIn,
+        username: req.session.username,
         title: "forum: new thread",
     });
 });

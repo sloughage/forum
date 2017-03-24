@@ -35,6 +35,7 @@ router.post('/login', function (req, res) {
 router.get('/register', function (req, res) {
     res.render('register', {
         isLoggedIn: req.session.isLoggedIn,
+        username: req.session.username,
         title: "forum: register"
         // message: req.flash('info')
     });
@@ -80,6 +81,7 @@ router.get('/users', function (req, res) {
     User.find(function (err, users) {
         res.render('users', {
             isLoggedIn: req.session.isLoggedIn,
+            username: req.session.username,
             title: "forum: users",
             // message: req.flash('info'),
             users: users
@@ -92,6 +94,36 @@ router.delete('/', function (req, res) {
         // req.flash('info', "deleted " + req.params.id);
         user.remove();
         res.send("user deleted");
+    });
+});
+
+router.post('/test', function (req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
+    User.findOne({username: username}, function (err, user) {
+        var uM = [];
+        var pM = [];
+        var pass = true;
+        if (user !== null) {
+            uM.push("unavailable");
+            pass = false;
+        }
+        if (username.length < 4) {
+            uM.push("less than 4 char");
+            pass = false;
+        }
+        if (username.indexOf(' ') !== -1) {
+            uM.push("contains space");
+            pass = false;
+        }
+        if (password.length < 4) {
+            pM.push("less than 4 char");
+            pass = false;
+        }
+        if (password.indexOf(' ') !== -1) {
+            pM.push("contains space");
+        }
+        res.json({pass: pass, uM: uM, pM: pM})
     });
 });
 

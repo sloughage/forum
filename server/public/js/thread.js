@@ -1,21 +1,6 @@
-$('.delete-user').on('click', function (e) {
-    var id = $(e.target).parent().data('id');
-    $.ajax({
-        url: '/user',
-        type: 'delete',
-        data: {id: id},
-        success: function (result) {
-            console.log(result);
-            window.location.reload();
-        },
-        error: function (err) {
-            console.log(err);
-            window.location.reload();
-        }
-    });
-});
+console.log("thread.js connected");
 
-$('.edit-post').on('click', function (e) {
+$('.edit-button').on('click', function (e) {
     $(e.target).parent().parent().find('.h').toggleClass('hidden');
 });
 
@@ -35,7 +20,7 @@ $('.patch-post').on('click', function (e) {
         error: function (err) {
             window.location.reload();
         }
-    })
+    });
 });
 
 $('.delete-post').on('click', function (e) {

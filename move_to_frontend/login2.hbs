@@ -1,9 +1,7 @@
 <div>
     {{#if isLoggedIn}}
     <a href='/user/logout'>logout</a>
-    {{/if}}
-
-    {{#unless isLoggedIn}}
+    {{else}}
     <form action='/user/login' method='POST'>
         <div class="cont v">
             <div class="cont">
@@ -20,5 +18,5 @@
             </div>
         </div>
     </form>
-    {{/unless}}
+    {{/if}}
 </div>
