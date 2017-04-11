@@ -1,130 +1,149 @@
-var express = require('express'),
-    router = express.Router(),
-    User = require('../models/User'),
-    bcrypt = require('bcryptjs');
+// login: get
+// login: post
+// register: get
+// register: post
+// logout: get
+// users: get
+// users: delete
+// ? test: post
 
-router.get('/login', function (req, res) {
-    res.redirect(req.header('Referer'));
-});
+const express = require('express')
+const router = express.Router()
+const User = require('../models/User')
+const bcrypt = require('bcryptjs')
 
-router.post('/login', function (req, res) {
-    User.findOne({username: req.body.username}, function (err, user) {
-        if (user) {
-            bcrypt.compare(
-                req.body.password,
-                user.password,
-                function (err, match) {
-                    if (match === true) {
-                        req.session.username = user.username;
-                        req.session.userId = user.id;
-                        req.session.isLoggedIn = true;
-                        res.redirect(req.header('Referer'));
-                    } else {
-                        // req.flash('info', "invalid login");
-                        res.redirect(req.header('Referer'));
-                    }
-                }
-            );
-        } else {
-            // req.flash('info', "invalid login");
-            res.redirect(req.header('Referer'));
-        }
-    });
-});
+router.get('/login', (req, res) => {
+  res.redirect(req.header('Referer'))
+})
 
-router.get('/register', function (req, res) {
-    res.render('register', {
-        isLoggedIn: req.session.isLoggedIn,
-        username: req.session.username,
-        title: "forum: register"
-        // message: req.flash('info')
-    });
-});
+// router.post('/login', (req, res) => {
+//   let tuser
+//   User.findOne({username: req.body.username})
+//   .then(user => {
+//     tuser = user
+//     return bcrypt.compare(req.body.password, user.password)
+//   }).then(match => {
+//     if (match === true) {
+//       req.session.username = tuser.username
+//       req.session.userId = tuser.id
+//       req.session.isLoggedIn = true
+//     }
+//     res.redirect(req.header('Referer'))
+//   }).catch(err => {
+//     res.send(err)
+//   })
+// })
 
-router.post('/register', function (req, res, next) {
-    User.findOne({username: req.body.username}, function (err, user) {
-        if (user === null) {
-            bcrypt.genSalt(10, function (err2, salt) {
-                bcrypt.hash(req.body.password, salt, function (err3, hash) {
-                    var newUser = {
-                        username: req.body.username,
-                        password: hash
-                    };
-                    User.create(newUser, function (err4, user) {
-                        if (user) {
-                            req.session.username = user.username;
-                            req.session.userId = user.id;
-                            req.session.isLoggedIn = true;
-                            res.redirect('/');
-                        } else {
-                            // req.flash('info', "error");
-                            res.send(err4);
-                        }
-                    });
-                });
-            });
-        } else {
-            // req.flash('info', "username taken");
-            res.redirect(req.header('Referer'));
-        }
-    });
-});
+router.post('/login', (req, res) => {
+  let tuser
+  User.findOne({username: req.body.username})
+  .then(user => {
+    tuser = user
+    return bcrypt.compare(req.body.password, user.password)
+  }).then(match => {
+    if (match === true) {
+      req.session.username = tuser.username
+      req.session.userId = tuser.id
+      req.session.isLoggedIn = true
+    }
+    res.send('logged in')
+  }).catch(err => {
+    res.send(err)
+  })
+})
 
-router.get('/logout', function (req, res) {
-    req.session.destroy(function (err) {
-        // req.flash('info', "logged out");
-        res.redirect(req.header('Referer'));
-    });
-});
+router.get('/loginstatus', (req, res) => {
+  res.send({
+    isLoggedIn: req.session.isLoggedIn,
+    username: req.session.username
+  })
+})
 
-router.get('/users', function (req, res) {
-    User.find(function (err, users) {
-        res.render('users', {
-            isLoggedIn: req.session.isLoggedIn,
-            username: req.session.username,
-            title: "forum: users",
-            // message: req.flash('info'),
-            users: users
-        });
-    });
-});
+router.get('/register', (req, res) => {
+  res.render('register', {
+    isLoggedIn: req.session.isLoggedIn,
+    username: req.session.username,
+    title: 'forum: register'
+  })
+})
 
-router.delete('/', function (req, res) {
-    User.findById(req.body.id, function (err, user) {
-        // req.flash('info', "deleted " + req.params.id);
-        user.remove();
-        res.send("user deleted");
-    });
-});
+router.post('/register', (req, res) => {
+  User.findOne({username: req.body.username})
+  .then(user => {// if user !== null, should err
+    return bcrypt.genSalt(10)
+  }).then(salt => {
+    return bcrypt.hash(req.body.password, salt)
+  }).then(hash => {
+    return User.create({username: req.body.username, password: hash})
+  }).then(user => {
+    req.session.username = user.username
+    req.session.userId = user.id
+    req.session.isLoggedIn = true
+    res.redirect('/')
+  }).catch(err => {
+    res.send(err)
+  })
+})
 
-router.post('/test', function (req, res) {
-    var username = req.body.username;
-    var password = req.body.password;
-    User.findOne({username: username}, function (err, user) {
-        var uM = [];
-        var pM = [];
-        var pass = true;
-        if (user !== null) {
-            uM.push("unavailable");
-            pass = false;
-        }
-        if (username.length < 4) {
-            uM.push("less than 4 char");
-            pass = false;
-        }
-        if (username.indexOf(' ') !== -1) {
-            uM.push("contains space");
-            pass = false;
-        }
-        if (password.length < 4) {
-            pM.push("less than 4 char");
-            pass = false;
-        }
-        if (password.indexOf(' ') !== -1) {
-            pM.push("contains space");
-        }
-        res.json({pass: pass, uM: uM, pM: pM})
-    });
-});
+// can we get session to be a promise?
+router.post('/logout', (req, res) => {
+  return new Promise((resolve, reject) => {
+    return req.session.destroy(err => {
+      if (true) reject(err)
+      else resolve()
+    })
+  })
+  .then(() => {
+    res.send('logout')
+  }).catch(err => {
+    res.send(err)
+  })
+})
 
-module.exports = router;
+router.get('/users', (req, res) => {
+  User.find()
+  .then(users => {
+    res.render('users', {
+      isLoggedIn: req.session.isLoggedIn,
+      username: req.session.username,
+      title: 'forum: users',
+      users: users
+    })
+  }).catch(err => {
+    res.send(err)
+  })
+})
+
+// user removed, but posts still around
+// implement "deleted" account status instead
+router.delete('/users', (req, res) => {
+  User.findById(req.body.id)
+  .then(user => {
+    return user.remove()
+  }).then(() => {
+    res.send('user deleted')
+  }).catch(err => {
+    res.send(err)
+  })
+})
+
+router.post('/test', (req, res) => {
+  const username = req.body.username
+  const password = req.body.password
+  User.findOne({username: username})
+  .then(user => {
+    res.json({
+      tests: [
+        user !== null,
+        username.length < 4,
+        username.indexOf(' ') !== -1,
+        password.length < 4,
+        password.indexOf(' ') !== -1
+      ]
+    })
+  }).catch(err => {
+    res.send(err)
+  })
+})
+
+module.exports = router

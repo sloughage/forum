@@ -11,28 +11,6 @@ textarea {
     flex-grow: 1;
 }
 
-// header {
-//     display: flex;
-//     min-width: 254px;
-//     background-color: grey;
-// }
-
-// a:link {
-//     color: powderblue;
-// }
-
-// a:visited {
-//     color: plum;
-// }
-
-// a:active, a:hover {
-//     color: white;
-// }
-
-// .pathlink:link, .pathlink:visited {
-//     color: white;
-// }
-
 .fill {
     flex-grow: 1;
 }
@@ -49,20 +27,6 @@ textarea {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
-
-.leftcont {
-    display: flex;
-    flex-direction: column;
-    border-right: solid lightgrey 1px;
-    padding-right: 6px;
-    width: 120px;
-}
-
-.rightcont {
-    display: flex;
-    flex-grow: 1;
-    padding-left: 6px;
 }
 
 .textbox_s {
@@ -97,6 +61,21 @@ textarea {
     background-color: darkgrey;
     cursor: pointer;
 }
+.body_button_a {
+    color: white;
+    text-decoration: none
+}
+.body_button {
+    align-items: center;
+    display: flex;
+    padding: 6px;
+    background-color: darkblue;
+    color: white
+}
+.body_button:hover, .body_button:focus {
+    background-color: blue;
+    cursor: pointer;
+}
 .login_dropdown {
     position: absolute;
     background-color: grey;
@@ -117,6 +96,20 @@ textarea {
     min-width: 254px;
     background-color: grey;
 }
+.leftcont {
+    display: flex;
+    flex-direction: column;
+    border-right: solid lightgrey 1px;
+    padding-right: 6px;
+    width: 120px;
+}
+
+.rightcont {
+    display: flex;
+    flex-grow: 1;
+    padding-left: 6px;
+}
+
 .talking_box {
     display: flex;
     margin: 6px;

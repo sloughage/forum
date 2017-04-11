@@ -1,10 +1,12 @@
 {{#if isLoggedIn}}
-<div class='full_length_box'>
+  <div class='full_length_box'>
     <a href='/new'>new thread</a>
-</div>
+  </div>
 {{/if}}
 {{#each threads}}
-<div class='full_length_box'>
-    <a href='/thread/{{this.id}}' class='overflow'>{{this.title}}</a>
-</div>
+  <div class='full_length_box'>
+    <a href='/thread/{{this.id}}' class='overflow'>
+      {{this.title}}
+    </a>
+  </div>
 {{/each}}

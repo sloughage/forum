@@ -1,56 +1,34 @@
-console.log("register.js connected");
-
-function writeM(uM, pM) {
-    var mbox = $('#mbox');
-    mbox.empty();
-    for (m of uM) {
-        mbox.append('<p class="red">' + m + '</p>');
+function showTests (arr) {
+  let lines = $('.h')
+  for (let i = 0; i < lines.length; i++) {
+    if (arr[i]){
+      $(lines[i]).removeClass('hidden')
     }
-    if (uM.length > 0 && pM.length > 0) {
-        mbox.append('<br>');
+    else {
+      $(lines[i]).addClass('hidden')
     }
-    for (m of pM) {
-        mbox.append('<p class="red">' + m + '</p>');
+  }
+}
+
+$('.textbox_s').on('keyup', () => {
+  $('#register').prop('disabled', true)
+  const username = $('#untb').val()
+  const password = $('#pwtb').val()
+  $.ajax({
+    url: '/user/test',
+    type: 'post',
+    data: {
+      username: username,
+      password: password
+    },
+    success: result => {
+      showTests(result.tests)
+      if (result.tests.every(m => !m)) {
+        $('#register').prop('disabled', false)
+      }
+    },
+    error: err => {
+      console.log(err)
     }
-}
-
-function writeOk() {
-    var mbox = $('#mbox');
-    mbox.empty();
-    mbox.append('<p class="green">ok</p>');
-}
-
-function writeLoading() {
-    var mbox = $('#mbox');
-    mbox.empty();
-    mbox.append('<p class="red">loading</p>');
-}
-
-function clearM() {
-    var mbox = $('#mbox');
-    mbox.empty();
-}
-
-$('.textbox_s').on('keyup', function () {
-    $('#register').prop('disabled', true);
-    writeLoading();
-    $.ajax({
-        url: '/user/test',
-        type: 'post',
-        data: {
-            username: $('#untb').val(),
-            password: $('#pwtb').val()
-        },
-        success: function (result) {
-            if (result.pass) {
-                $('#register').prop('disabled', false);
-                writeOk();
-            } else {
-                writeM(result.uM, result.pM);
-            };
-        },
-        error: function (err) {
-            console.log(err);
-        }
-    });
-});
+  })
+})

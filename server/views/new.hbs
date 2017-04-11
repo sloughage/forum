@@ -1,18 +1,21 @@
 {{#if isLoggedIn}}
-<form action='/new' method='post'>
+  <form action='/new' method='post'>
     <div class='full_length_box'>
-        <input type='text' name='title' class='textbox_l' placeholder="title" maxlength='100' required>
+      <input type='text' name='title' class='textbox_l' placeholder="title"
+        maxlength='100' required>
     </div>
     <div class='full_length_box'>
-        <div class='leftcont'>
-            <div class='fill'></div>
-            <button type='submit'>post</button>
-        </div>
-        <div class='rightcont'>
-            <textarea name='content' required></textarea>
-        </div>
+      <div class='leftcont'>
+        <div class='fill'></div>
+        <button type='submit'>post</button>
+      </div>
+      <div class='rightcont'>
+        <textarea name='content' required></textarea>
+      </div>
     </div>
-</form>
+  </form>
 {{else}}
-<div class='talking_box'><p>login to post a new thread</p></div>
+  <div class='talking_box'>
+    <p>login to post a new thread</p>
+  </div>
 {{/if}}

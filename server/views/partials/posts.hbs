@@ -1,0 +1,19 @@
+{{#each posts}}
+  <div class='full_length_box'>
+    <div class='leftcont' data-id='{{this.id}}'>
+      <p class='overflow'>{{this.username}}</p>
+      <p>{{this.time}}</p>
+      {{#if this.isUser}}
+        <div class='body_button edit-button h'>edit</div>
+        <div class='body_button patch-post h hidden'>save</div>
+        <div class='body_button delete-post h hidden'>delete</div>
+      {{/if}}
+    </div>
+    <div class='rightcont'>
+      <p class='h'>{{this.content}}</p>
+      {{#if this.isUser}}
+        <textarea name='content' class='h hidden'required>{{this.content}}</textarea>
+      {{/if}}
+    </div>
+  </div>
+{{/each}}

@@ -1,9 +1,9 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-var ThreadSchema = new mongoose.Schema({
-    title: String,
-    size: Number,
-    timestamp: Number
-});
+const ThreadSchema = new mongoose.Schema({
+  title: String,
+  size: Number,
+  timestamp: Number
+})
 
-module.exports = mongoose.model('Thread', ThreadSchema);
+module.exports = mongoose.model('Thread', ThreadSchema)

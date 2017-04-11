@@ -1,62 +1,53 @@
-var express = require('express'),
-    router = express.Router(),
-    Thread = require('../models/Thread');
-    Post = require('../models/Post');
+const express = require('express')
+const router = express.Router()
+const Thread = require('../models/Thread')
+const Post = require('../models/Post')
 
-router.get('/', function (req, res) {
-    Thread.find(function(err, threads) {
-        if (err) {
-            res.send(err);
-        } else {
-            var sThreads = threads.sort(function (a, b) {
-                return b.timestamp - a.timestamp;
-            });
-            res.render('home', {
-                isLoggedIn: req.session.isLoggedIn,
-                username: req.session.username,
-                title: "forum",
-                threads: sThreads
-            });
-        }
-    });
-});
+router.get('/', (req, res) => {
+  Thread.find()
+  .then(threads => {
+    const sthreads = threads.sort((a, b) => b.timestamp - a.timestamp)
+    const tmessage = req.session.message
+    req.session.message = null
+    res.render('home', {
+      isLoggedIn: req.session.isLoggedIn,
+      username: req.session.username,
+      title: 'forum',
+      threads: sthreads,
+      message: tmessage
+    })
+  }).catch(err => {
+    res.send(err)
+  })
+})
 
-router.get('/new', function (req, res) {
-    res.render('new', {
-        isLoggedIn: req.session.isLoggedIn,
-        username: req.session.username,
-        title: "forum: new thread",
-    });
-});
+router.get('/new', (req, res) => {
+  res.render('new', {
+    isLoggedIn: req.session.isLoggedIn,
+    username: req.session.username,
+    title: 'forum: new thread'
+  })
+})
 
-router.post('/new', function (req, res) {
-    var newThread = {
-        title: req.body.title,
-        size: 1,
-        timestamp: Date.now()
-    }
-    Thread.create(newThread, function (err, thread) {
-        if (err) {
-            // message: error
-            res.send(err);
-        } else {
-            var newPost = {
-                username: req.session.username,
-                userId: req.session.userId,
-                content: req.body.content,
-                timestamp: thread.timestamp,
-                threadId: thread.id
-            }
-            Post.create(newPost, function (err2, post) {
-                if (err2) {
-                    //message: error
-                    res.send(err2);
-                } else {
-                    res.redirect('/');
-                }
-            });
-        }
-    });
-});
+router.post('/new', (req, res) => {
+  const ttimestamp = Date.now()
+  Thread.create({
+    title: req.body.title,
+    size: 1,
+    timestamp: ttimestamp
+  }).then(thread => {
+    return Post.create({
+      username: req.session.username,
+      userId: req.session.userId,
+      content: req.body.content,
+      timestamp: ttimestamp,
+      threadId: thread.id
+    })
+  }).then(post => {
+    res.redirect('/')
+  }).catch(err => {
+    res.send(err)
+  })
+})
 
-module.exports = router;
+module.exports = router

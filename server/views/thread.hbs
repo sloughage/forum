@@ -1,34 +1,8 @@
-<div class='full_length_box'><p class='overflow'>{{threadtitle}}</p></div>
-{{#each posts}}
 <div class='full_length_box'>
-    <div class='leftcont' data-id='{{this.id}}'>
-        <p class='overflow'>{{this.username}}</p>
-        <p>{{this.time}}</p>
-        {{#if this.isUser}}
-        <button class='edit-button h'>edit</button>
-        <button class='patch-post h hidden'>save</button>
-        <button class='delete-post h hidden'>delete</button>
-        {{/if}}
-    </div>
-    <div class='rightcont'>
-        <p class='h'>{{this.content}}</p>
-        {{#if this.isUser}}
-        <textarea name='content' class='h hidden' required>{{this.content}}</textarea>
-        {{/if}}
-    </div>
+  <p class='overflow'>{{threadtitle}}</p>
 </div>
-{{/each}}
+{{> posts}}
 {{#if isLoggedIn}}
-<form action='/post/{{threadId}}' method='post'>
-    <div class='full_length_box'>
-        <div class='leftcont'>
-            <div class='fill'></div>
-            <button type='submit'>post</button>
-        </div>
-        <div class='rightcont'>
-            <textarea name='content' autofocus required></textarea>
-        </div>
-    </div>
-</form>
+  {{> new_post}}
 {{/if}}
 <script src="/js/thread.js" type="text/javascript"></script>

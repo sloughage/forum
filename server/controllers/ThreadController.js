@@ -1,43 +1,39 @@
-var express = require('express'),
-    router = express.Router(),
-    Thread = require('../models/Thread'),
-    Post = require('../models/Post');
+// move :id to .body
 
-router.get('/:id', function (req, res) {
-    var id = req.params.id;
-    Thread.findById(id, function (err, thread) {
-        if (err) {
-            // message: "thread not found"
-            res.redirect('/');
-        } else {
-            Post.find({threadId: id}, function (err2, posts) {
-                if (err2) {
-                    res.send(err2);
-                } else {
-                    var sPosts = posts.sort(function (a, b) {
-                        return a.timestamp - b.timestamp;
-                    });
-                    sPosts.forEach(function (x) {
-                        x.isUser = (x.userId === req.session.userId);
-                        var date = new Date(x.timestamp);
-                        if (Date.now() - x.timestamp > 86400000) {
-                            x.time = date.toLocaleDateString();
-                        } else {
-                            x.time = date.toLocaleTimeString();
-                        }
-                    });
-                    res.render('thread', {
-                        isLoggedIn: req.session.isLoggedIn,
-                        username: req.session.username,
-                        title: "forum: " + thread.title,
-                        threadtitle: thread.title,
-                        threadId: id,
-                        posts: sPosts
-                    });
-                }
-            });
-        }
-    });
-});
+const express = require('express')
+const router = express.Router()
+const Thread = require('../models/Thread')
+const Post = require('../models/Post')
 
-module.exports = router;
+router.get('/:id', (req, res) => {
+  let tthread
+  const ttimestamp = Date.now()
+  Thread.findById(req.params.id)
+  .then(thread => {
+    tthread = thread
+    return Post.find({threadId: req.params.id})
+  }).then(posts => {
+    let sposts = posts.sort((a, b) => a.timestamp - b.timestamp)
+    sposts.forEach(post => {
+      post.isUser = (post.userId === req.session.userId)
+      const date = new Date(post.timestamp)
+      if (ttimestamp - post.timestamp > 86400000) {
+        post.time = date.toLocaleDateString()
+      } else {
+        post.time = date.toLocaleTimeString()
+      }
+    })
+    res.render('thread', {
+      isLoggedIn: req.session.isLoggedIn,
+      username: req.session.username,
+      title: 'forum: ' + tthread.title,
+      threadtitle: tthread.title,
+      threadId: req.params.id,
+      posts: sposts
+    })
+  }).catch(err => {
+    res.send(err)
+  })
+})
+
+module.exports = router
